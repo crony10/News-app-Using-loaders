@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="66dp"
+    tools:context=".MainActivity"
+    android:orientation="horizontal"
+    android:paddingEnd="16dp"
+    android:paddingRight="16dp"
+    android:paddingStart="16dp"
+    android:paddingLeft="16dp">
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:text="Hello World!"
+        android:layout_weight="2"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="date"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="type"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/section"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="section"
+            android:layout_weight="1"/>
+    </LinearLayout>
+</LinearLayout>
