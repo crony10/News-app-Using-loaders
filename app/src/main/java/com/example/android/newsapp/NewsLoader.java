@@ -1,6 +1,8 @@
 package com.example.android.newsapp;
+
 import android.content.Context;
 import android.content.AsyncTaskLoader;
+
 import java.util.List;
 
 public class NewsLoader extends AsyncTaskLoader<List<News>> {
@@ -9,7 +11,7 @@ public class NewsLoader extends AsyncTaskLoader<List<News>> {
 
     private String mUrl;
 
-    public NewsLoader(Context context,String url){
+    public NewsLoader(Context context, String url) {
 
         super(context);
         mUrl = url;
@@ -22,7 +24,7 @@ public class NewsLoader extends AsyncTaskLoader<List<News>> {
 
     @Override
     public List<News> loadInBackground() {
-        if(mUrl == null){
+        if (mUrl == null) {
             return null;
         }
         List<News> news = Queryutils.fetchNewsData(mUrl);

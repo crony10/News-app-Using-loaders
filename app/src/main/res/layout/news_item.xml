@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="66dp"
-    tools:context=".MainActivity"
+    android:layout_height="77dp"
     android:orientation="horizontal"
+    android:paddingStart="16dp"
+    android:paddingLeft="16dp"
     android:paddingEnd="16dp"
     android:paddingRight="16dp"
-    android:paddingStart="16dp"
-    android:paddingLeft="16dp">
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/Title"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_weight="2"
         android:gravity="center_vertical"
-        android:text="Hello World!"
-        android:layout_weight="2"/>
+        android:text="Hello World!" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -26,24 +25,31 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/author"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/author" />
+
+        <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="date"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="@string/date" />
 
         <TextView
             android:id="@+id/type"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="type"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="@string/type" />
 
         <TextView
             android:id="@+id/section"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="section"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="@string/section" />
     </LinearLayout>
 </LinearLayout>

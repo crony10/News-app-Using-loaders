@@ -13,7 +13,7 @@ import android.support.annotation.Nullable;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 
-import  android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,7 +26,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderCallbacks<List<News>> {
 
-    public static final String request_url = "https://content.guardianapis.com/search?q=debates&api-key=test";
+    public static final String request_url = "https://content.guardianapis.com/search?q=Careers&show-tags=contributor&api-key=test";
 
     public static final String LOG_TAG = MainActivity.class.getName();
 
@@ -46,14 +46,14 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
 //        news.add(new News("Donald Trump lost","10/10/2001","Article","Politics"));
 
         //NewsAdapter adapter =
-                //new NewsAdapter(this,news);
-        ListView listView = (ListView)findViewById(R.id.news_list);
+        //new NewsAdapter(this,news);
+        ListView listView = (ListView) findViewById(R.id.news_list);
         //listView.setAdapter(adapter);
 
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         listView.setEmptyView(mEmptyStateTextView);
 
-        mAdapter = new NewsAdapter(this,new ArrayList<News>());
+        mAdapter = new NewsAdapter(this, new ArrayList<News>());
 
         listView.setAdapter(mAdapter);
 
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
 
                 Uri newsUri = Uri.parse(currentNews.getUrl());
 
-                Intent websiteIntent =new Intent(Intent.ACTION_VIEW,newsUri);
+                Intent websiteIntent = new Intent(Intent.ACTION_VIEW, newsUri);
 
                 startActivity(websiteIntent);
             }
@@ -74,22 +74,19 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
 
         NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
 
-        if(networkInfo != null && networkInfo.isConnected()){
+        if (networkInfo != null && networkInfo.isConnected()) {
 
             //NewsAsyncTask task = new NewsAsyncTask();
             //task.execute(request_url);
             LoaderManager loaderManager = getLoaderManager();
 
-            loaderManager.initLoader(0,null,this);
-        }
-
-        else{
+            loaderManager.initLoader(0, null, this);
+        } else {
             View loadingIndicator = findViewById(R.id.loading_indicator);
             loadingIndicator.setVisibility(View.GONE);
 
             mEmptyStateTextView.setText(R.string.no_internet);
         }
-
 
 
     }
@@ -118,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
 
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
-        return new NewsLoader(this,request_url);
+        return new NewsLoader(this, request_url);
     }
 
     @Override
@@ -130,13 +127,13 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
         mEmptyStateTextView.setText(R.string.no_news);
         mAdapter.clear();
 
-        if(news != null && !news.isEmpty()){
+        if (news != null && !news.isEmpty()) {
             mAdapter.addAll(news);
         }
     }
 
     @Override
-    public void onLoaderReset( Loader<List<News>> loader) {
+    public void onLoaderReset(Loader<List<News>> loader) {
         mAdapter.clear();
     }
 }

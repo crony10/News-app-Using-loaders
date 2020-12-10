@@ -14,13 +14,16 @@ public class News {
 
     private String mUrl;
 
-    public News(String title, String date, String type, String section,String url){
+    private String mAuthor;
+
+    public News(String title, String date, String type, String section, String url, String author) {
 
         mTitle = title;
         mDate = date;
         mType = type;
         mSection = section;
         mUrl = url;
+        mAuthor = author;
     }
 
     public String getDate() {
@@ -39,8 +42,12 @@ public class News {
         return mType;
     }
 
-    public String getUrl(){
+    public String getUrl() {
         return mUrl;
+    }
+
+    public String getAuthor() {
+        return mAuthor;
     }
 
     @NonNull
@@ -48,8 +55,8 @@ public class News {
     public String toString() {
         return "News{" +
                 "mTitle" + mTitle +
-                ", mDate= ' " + mDate +'\''+
-                ", mType= ' " + mType +'\''+
+                ", mDate= ' " + mDate + '\'' +
+                ", mType= ' " + mType + '\'' +
                 ", mSection=" + mSection +
                 '}';
     }

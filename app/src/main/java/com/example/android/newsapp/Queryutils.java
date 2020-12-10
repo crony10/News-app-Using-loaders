@@ -1,12 +1,9 @@
 package com.example.android.newsapp;
-
 import android.text.TextUtils;
 import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,20 +19,20 @@ public final class Queryutils {
 
     private static final String LOG_TAG = Queryutils.class.getSimpleName();
 
-    private Queryutils(){
+    private Queryutils() {
 
     }
 
-    public static List<News> fetchNewsData(String req_url){
+    public static List<News> fetchNewsData(String req_url) {
 
         URL url = createUrl(req_url);
 
         String jsonResponse = null;
 
-        try{
+        try {
             jsonResponse = makeHttpReq(url);
-        }catch (IOException e){
-            Log.e(LOG_TAG,"Problem in making HTTP req.",e);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem in making HTTP req.", e);
         }
         List<News> news = extractResponseFromJson(jsonResponse);
 
@@ -46,33 +43,33 @@ public final class Queryutils {
 
         String jsonResponse = "null";
 
-        if(url == null){
+        if (url == null) {
             return jsonResponse;
         }
 
+
         HttpURLConnection urlConnection = null;
         InputStream inputStream = null;
-        try{
+        try {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setReadTimeout(10000);/*in milliseconds*/
             urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
-            if(urlConnection.getResponseCode() == 200){
+            if (urlConnection.getResponseCode() == 200) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
-            }else{
-                Log.e(LOG_TAG,"Error response code: "+ urlConnection.getResponseCode());
+            } else {
+                Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
-        }catch(IOException e){
-            Log.e(LOG_TAG,"Error retrieving the json response ",e);
-        }
-        finally {
-            if(urlConnection != null){
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error retrieving the json response ", e);
+        } finally {
+            if (urlConnection != null) {
                 urlConnection.disconnect();
             }
-            if(inputStream!=null){
+            if (inputStream != null) {
                 inputStream.close();
             }
         }
@@ -83,11 +80,11 @@ public final class Queryutils {
 
         StringBuilder output = new StringBuilder();
 
-        if(inputStream!=null){
+        if (inputStream != null) {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
             BufferedReader reader = new BufferedReader(inputStreamReader);
             String line = reader.readLine();
-            while(line!=null){
+            while (line != null) {
                 output.append(line);
                 line = reader.readLine();
             }
@@ -99,64 +96,87 @@ public final class Queryutils {
 
         URL url = null;
 
-        try{
+        try {
             url = new URL(req_url);
-        }
-        catch (MalformedURLException e){
-            Log.e(LOG_TAG,"Problem building the url: ",e);
+        } catch (MalformedURLException e) {
+            Log.e(LOG_TAG, "Problem building the url: ", e);
         }
         return url;
     }
 
-    private static String correctDate(String date){
+    private static String correctDate(String date) {
 
-        String correctedDate =  date.substring(0,date.lastIndexOf("T"));
-        Log.d(LOG_TAG, "correctDate is: "+correctedDate);
+        String correctedDate = date.substring(0, date.lastIndexOf("T"));
+        Log.d(LOG_TAG, "correctDate is: " + correctedDate);
         return correctedDate;
     }
 
-    private static List<News> extractResponseFromJson(String newsJson){
+    private static List<News> extractResponseFromJson(String newsJson) {
 
-        if(TextUtils.isEmpty(newsJson)){
+        if (TextUtils.isEmpty(newsJson)) {
             return null;
         }
-
         List<News> news = new ArrayList<>();
 
-        try{
+        try {
             JSONObject baseJsonResponse = new JSONObject(newsJson);
 
             JSONObject newsObject = baseJsonResponse.getJSONObject("response");
 
             JSONArray newsArray = newsObject.getJSONArray("results");
 
-            for(int i = 0 ; i<newsArray.length(); i++){
+            for (int i = 0; i < newsArray.length(); i++) {
 
                 JSONObject currentNews = newsArray.getJSONObject(i);
 
-                String type = currentNews.getString("type");
+                String type = "type: ";
 
-                String title = currentNews.getString("webTitle");
+                String title = "title: ";
+
+                String section = "section: ";
+
+                String date = "date: ";
 
                 String url = currentNews.getString("webUrl");
 
-                String section = currentNews.getString("sectionName");
+                type = type.concat(currentNews.getString("type"));
 
-                String date = currentNews.getString("webPublicationDate");
+                title = title.concat(currentNews.getString("webTitle"));
+
+                section = section.concat(currentNews.getString("sectionName"));
+
+                date = date.concat(currentNews.getString("webPublicationDate"));
 
                 date = correctDate(date);
 
-                News newsList = new News(title,date,type,section,url);
+                JSONArray authorArray = currentNews.getJSONArray("tags");
+
+                String authorName = "";
+
+                for (int j = 0; j < authorArray.length(); j++) {
+
+                    JSONObject authorObject = authorArray.getJSONObject(j);
+
+                    Log.i(LOG_TAG, "extractResponseFromJson: " + authorArray);
+
+                    if (authorObject != null) {
+                        String authorFirstName = authorObject.getString("firstName");
+                        authorFirstName = authorFirstName.concat(" ");
+                        String authorLastName = authorObject.getString("lastName");
+                        authorName = authorFirstName.concat(authorLastName);
+                    } else break;
+                }
+                if (authorName.equals("")) {
+                    authorName = "No author";
+                }
+                News newsList = new News(title, date, type, section, url, authorName);
 
                 news.add(newsList);
             }
+        } catch (JSONException e) {
 
-
-        }catch (JSONException e){
-
-            Log.e("QueryUtils","problem thai gai in parsing news JSON results",e);
+            Log.e("QueryUtils", "problem thai gai in parsing news JSON results", e);
         }
-
         return news;
     }
 }
