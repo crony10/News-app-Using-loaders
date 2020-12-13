@@ -19,7 +19,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderCallbacks<List<News>> {
 
-    public static final String request_url = "https://content.guardianapis.com/search?q=Careers&show-tags=contributor&api-key=test";
+    public static final String request_url = "https://content.guardianapis.com/search?q=Careers&show-tags=contributer&api-key=cb7d8f5c-3c29-4230-8cdc-881ca86d3e3a";
 
     public static final String LOG_TAG = MainActivity.class.getName();
 
@@ -77,10 +77,18 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
     @Override
     public void onLoadFinished(Loader<List<News>> loader, List<News> news) {
 
+        ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            mEmptyStateTextView.setText(R.string.no_news);
+        } else {
+            mEmptyStateTextView.setText(R.string.no_internet);
+        }
+
         View loadingIndicator = findViewById(R.id.loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
-
-        mEmptyStateTextView.setText(R.string.no_news);
         mAdapter.clear();
 
         if (news != null && !news.isEmpty()) {
